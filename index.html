@@ -4,10 +4,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Spark Demo</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/tooldemo.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -24,8 +25,8 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section> 
-					<h1>Spark</h1>
+				<section>
+					<h1>Spark Demo</h1>
 					<h4>An open-source cluster-computing framework</h4>
 					<p>
 						<small>Presented by Xingan Wang &amp; Yiming Wang</small>
@@ -35,7 +36,7 @@
 				<section>
 					<h2>Introduction</h2>
 					<section>
-						
+
 						<ul>
 							<li>Apache Spark was originally developed at the University of California, Berkeley's AMPLab</li>
 							<li>The Spark codebase was later donated to the Apache Software Foundation</li>
@@ -47,7 +48,7 @@
 						<ul>
 							<li>"Run programs up to 100x faster than Hadoop MapReduce in memory, or 10x faster on disk."</li>
 							<li>DAG Engine (directed acyclic graph) optimizes workflows</li>
-						</ul>						
+						</ul>
 					</section>
 
 					<section>
@@ -69,7 +70,7 @@
 
 				</section>
 
-				<section> 
+				<section>
 					<section>
 						<h2>Setup</h2>
 					</section>
@@ -106,19 +107,19 @@
 					</section>
 					<section>
 						Main function
-						<pre><code class="scala" data-trim contenteditable>
+						<pre><code class="hljs scala" data-trim contenteditable>
 						  def main(args: Array[String]) {
-						   
+
 						    // Create a logger to trace the execution
 						    // Set the log level to only print errors
 						    Logger.getLogger("org").setLevel(Level.ERROR)
-						    
+
 						    // Create a SparkContext using every core of the local machine
-						    val sc = new SparkContext("local[*]", "PopularMoviesNicer")  
-						    
+						    val sc = new SparkContext("local[*]", "PopularMoviesNicer")
+
 						    // Create a broadcast variable of our ID -> movie name map
 						    var nameDict = sc.broadcast(loadMovieNames)
-						    
+
 						    ...
 						  }
 						</code></pre>
@@ -126,9 +127,9 @@
 
 					<section>
 						Build a Map of movie IDs to movie names
-						<pre><code class="scala" data-trim contenteditable>
+						<pre><code class="hljs scala" data-trim contenteditable>
 						  def loadMovieNames() : Map[Int, String] = {
-						    
+
 						    // Handle character encoding issues:
 						    implicit val codec = Codec("UTF-8")
 						    codec.onMalformedInput(CodingErrorAction.REPLACE)
@@ -136,7 +137,7 @@
 
 						    // Create a Map of Ints to Strings.
 						    var movieNames:Map[Int, String] = Map()
-						    
+
 						    val lines = Source.fromFile("../ml-100k/u.item").getLines()
 						    for (line &lt;- lines) {
 						      var fields = line.split('|')
@@ -144,7 +145,7 @@
 						        movieNames += (fields(0).toInt -> fields(1))
 						      }
 						    }
-						    
+
 						    return movieNames
 						  }
 						</code></pre>
@@ -153,62 +154,62 @@
 
 					<section>
 						Main function continue
-						<pre><code class="scala" data-trim contenteditable>
+						<pre><code class="hljs scala" data-trim contenteditable>
 							...
-						    
+
 						    // Read in each rating line
 						    val lines = sc.textFile("../ml-100k/u.data")
-						    
+
 						    // Map to (movieID, 1) tuples
 						    val movies = lines.map(x => (x.split("\t")(1).toInt, 1))
-						    
+
 						    // Count up all the 1's for each movie
 						    val movieCounts = movies.reduceByKey( (x, y) => x + y )
-						    
+
 						    // Flip (movieID, count) to (count, movieID)
 						    val flipped = movieCounts.map( x => (x._2, x._1) )
-						    
+
 						    // Sort
 						    val sortedMovies = flipped.sortByKey()
-						    
+
 						    // Fold in the movie names from the broadcast variable
-						    val sortedMoviesWithNames = sortedMovies.map( x  => (nameDict.value(x._2), x._1) )
-						    
+						    val sortedMoviesWithNames = sortedMovies.map(x => (nameDict.value(x._2), x._1))
+
 						    // Collect and print results
 						    val results = sortedMoviesWithNames.collect()
-						    
+
 						    results.foreach(println)
 						  }
 						</code></pre>
 						<small>../ml-100k/u.data: UserId, MovieId, Rating, Time.</small>
 					</section>
-					
+
 				</section>
 
 				<section>
 					<section>
 						<h2>Packaging and Deploying your application</h2>
 					</section>
-					
+
 					<section>
 						<h3>Running with spark-submit</h3>
 						<ul>
 							<li>Package up your Scala project into a JAR file</li>
 							<li>Right-click package -> Export -> Java(.Jar) file -> finish</li>
-							<li>spark-submit --class &lt;class object that contains your main function&gt; 
+							<li>spark-submit --class &lt;class object that contains your main function&gt;
 								<br>--jars &lt;paths to any dependencies&gt; </br>&lt;your JAR file&gt;</li>
 
 						</ul>
 					</section>
 
-					<section> 
+					<section>
 						<h3>Running on a cluter</h3>
 
 					</section>
 
-				</section>	
+				</section>
 
-				<section> 
+				<section>
 					<h2>Thanks</h2>
 
 				</section>
