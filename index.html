@@ -33,8 +33,9 @@
 				</section>
 
 				<section>
+					<h2>Introduction</h2>
 					<section>
-						<h2>Introduction</h2>
+						
 						<ul>
 							<li>Apache Spark was originally developed at the University of California, Berkeley's AMPLab</li>
 							<li>The Spark codebase was later donated to the Apache Software Foundation</li>
@@ -74,12 +75,12 @@
 					</section>
 
 					<section>
-						<h4>Install a Java Development Kit (JDK)</h4>
+						<h3>Install a Java Development Kit (JDK)</h3>
 						<small><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK Download Site</a></small>
 					</section>
 
 					<section>
-						<h4>Install Spark</h4>
+						<h3>Install Spark</h3>
 						<br><small><a href="https://spark.apache.org/downloads.html">Spark Download Site</a></small></br>
 						<ul>
 							<li>Install Homebrew</li>
@@ -92,7 +93,7 @@
 					</section>
 
 					<section>
-						<h4>Install Scala IDE</h4>
+						<h3>Install Scala IDE</h3>
 						<small><a href="http://scala-ide.org/download/sdk.html">Scala IDE Download Site</a></small>
 					</section>
 				</section>
@@ -100,7 +101,7 @@
 				<section>
 
 					<section>
-						<h2>Popular Movies</h2>
+						<h3>Popular Movies</h3>
 						<h4>Find the movies with the most ratings.</h4>
 					</section>
 					<section>
@@ -180,12 +181,35 @@
 						  }
 						</code></pre>
 						<small>../ml-100k/u.data: UserId, MovieId, Rating, Time.</small>
-					</section>	
+					</section>
 					
 				</section>
 
+				<section>
+					<section>
+						<h2>Packaging and Deploying your application</h2>
+					</section>
+					
+					<section>
+						<h3>Running with spark-submit</h3>
+						<ul>
+							<li>Package up your Scala project into a JAR file</li>
+							<li>Right-click package -> Export -> Java(.Jar) file -> finish</li>
+							<li>spark-submit --class &lt;class object that contains your main function&gt; 
+								<br>--jars &lt;paths to any dependencies&gt; </br>&lt;your JAR file&gt;</li>
+
+						</ul>
+					</section>
+
+					<section> 
+						<h3>Running on a cluter</h3>
+
+					</section>
+
+				</section>	
+
 				<section> 
-					<h2>Program Execution</h2>
+					<h2>Thanks</h2>
 
 				</section>
 
