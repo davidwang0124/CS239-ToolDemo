@@ -33,31 +33,62 @@
 				</section>
 
 				<section>
-					<h2>Introduction</h2>
-					<p>
-						Apache Spark was originally developed at the University of California, Berkeley's AMPLab, the Spark codebase was later donated to the Apache Software Foundation. It provides programmers with an application programming interface for entire clusters. 
-						<!--It centered on a data structure called the resilient distributed dataset (RDD) which is a read-only multiset of data items distributed over a cluster of machines. -->
-					</p>
+					<section>
+						<h2>Introduction</h2>
+						<ul>
+							<li>Apache Spark was originally developed at the University of California, Berkeley's AMPLab</li>
+							<li>The Spark codebase was later donated to the Apache Software Foundation</li>
+							<li>It is a fast and general engine for large-scale data processing</li>
+						</ul>
+					</section>
+
+					<section>
+						<ul>
+							<li>"Run programs up to 100x faster than Hadoop MapReduce in memory, or 10x faster on disk."</li>
+							<li>DAG Engine (directed acyclic graph) optimizes workflows</li>
+						</ul>						
+					</section>
+
+					<section>
+						<ul>
+							<li>Code in Python, Java, or Scala</li>
+							<li>Built around one main concept: the Resilient Distributed Dataset(RDD).</li>
+						</ul>
+					</section>
+
+					<section>
+						<h3>Why Scala?</h3>
+						<ul>
+							<li>Spark itself is written in Scala</li>
+							<li>Scala uses functional programming model which is a good fit for distributed processing</li>
+							<li>Fast performance (python is slow in comparison)</li>
+							<li>Scala complies to Java bytecode</li>
+						</ul>
+					</section>
+
 				</section>
 
 				<section> 
-					<h2>Setup</h2>
-					<!--<section>
+					<section>
+						<h2>Setup</h2>
+					</section>
+
+					<section>
 						<h4>Install a Java Development Kit (JDK)</h4>
 						<small><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK Download Site</a></small>
-					</section>	-->
+					</section>
 
 					<section>
 						<h4>Install Spark</h4>
 						<br><small><a href="https://spark.apache.org/downloads.html">Spark Download Site</a></small></br>
-						<small><ol>
-							<li>Install Homebrew: <font color=lightblue>/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"</font></li>
+						<ul>
+							<li>Install Homebrew</li>
 							<li>Enter <font color=grey>brew install apache-spark</font></li>
 							<li>Create a log4j.properties file via
 							   <br><font color=grey>cd /usr/local/Cellar/apache-spark/2.0.0/libexec/conf</font></br>
 							   <font color=grey>cp log4j.properties.template log4j.properties</font></li>
 							<li>Change the error level from INFO to ERROR for log4j.rootCategory</li>
-						</ol></small>
+						</ul>
 					</section>
 
 					<section>
