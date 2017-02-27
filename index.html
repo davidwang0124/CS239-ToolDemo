@@ -187,26 +187,13 @@
 				</section>
 
 				<section>
-					<section>
-						<h2>Packaging and Deploying your application</h2>
-					</section>
-
-					<section>
-						<h3>Running with spark-submit</h3>
-						<ul>
-							<li>Package up your Scala project into a JAR file</li>
-							<li>Right-click package -> Export -> Java(.Jar) file -> finish</li>
-							<li>spark-submit --class &lt;class object that contains your main function&gt;
-								<br>--jars &lt;paths to any dependencies&gt; </br>&lt;your JAR file&gt;</li>
-
-						</ul>
-					</section>
-
-					<section>
-						<h3>Running on a cluter</h3>
-
-					</section>
-
+					<h2>Packaging and Deploying your application</h2>
+					<ul>
+						<li>Package up your Scala project into a JAR file</li>
+						<li>Upload jar files and data files to aws S3</li>
+						<li>Login to EMR/EC2 and download jar file and data file</li>
+						<li><code>spark-submit</code> to run</li>
+					</ul>
 				</section>
 
 				<section>
