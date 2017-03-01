@@ -201,17 +201,85 @@
 					</section>
 
 					<section>
-						<h3>Package declaration & external package import</h3>
-						<pre><code class="hljs scala" data-trim>
-							package org.cs239.spark
+						<h3>Count by value</h3>
 
-							import org.apache.spark._
-							import org.apache.spark.SparkContext._
-							import org.apache.log4j._
+						<pre><code class="hljs scala" data-trim>
+							val results = ratings.countByValue()
 						</code></pre>
+						<table style="font-size: 18px; position: absolute; left: 35%; top: 105%">
+							<tbody>
+								<tr>
+									<td>3</td>
+								</tr>
+								<tr>
+									<td>3</td>
+								</tr>
+								<tr>
+									<td>1</td>
+								</tr>
+								<tr>
+									<td>2</td>
+								</tr>
+								<tr>
+									<td>1</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						<p style="font-size: 18px; position: absolute; left: 50%; top: 125%">→</p>
+						<table style="font-size: 18px; position: absolute; right: 35%; top: 120%">
+							<tbody>
+								<tr>
+									<td>(3, 2)</td>
+								</tr>
+								<tr>
+									<td>(1, 2)</td>
+								</tr>
+								<tr>
+									<td>(2, 1)</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+
+					<section>
+						<h3>Sort and Display the results</h3>
+
+						<pre><code class="hljs scala" data-trim>
+							val sortedResults = results.toSeq.sortBy(_._1)
+
+							sortedResults.foreach(println)
+						</code></pre>
+						<table style="font-size: 18px; position: absolute; left: 35%; top: 120%">
+							<tbody>
+								<tr>
+									<td>(3, 2)</td>
+								</tr>
+								<tr>
+									<td>(1, 2)</td>
+								</tr>
+								<tr>
+									<td>(2, 1)</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						<p style="font-size: 18px; position: absolute; left: 50%; top: 125%">→</p>
+						<table style="font-size: 18px; position: absolute; right: 35%; top: 120%">
+							<tbody>
+								<tr>
+									<td>1 2</td>
+								</tr>
+								<tr>
+									<td>2 1</td>
+								</tr>
+								<tr>
+									<td>3 2</td>
+								</tr>
+							</tbody>
+						</table>
 					</section>
 				</section>
-
 
 				<section>
 					<h2>Thanks</h2>
