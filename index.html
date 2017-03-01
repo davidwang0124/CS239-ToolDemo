@@ -98,7 +98,7 @@
 
 					<section>
 						<h3>Load the data</h3>
-						<table style="font-size: 18px">
+						<table style="font-size: 18px; position: absolute; left: 40%; top: 105%">
 							<tbody>
 								<tr>
 									<td>196</td>
@@ -140,7 +140,10 @@
 					<section>
 						<h3>Extract(Map) the data</h3>
 
-						<table style="font-size: 18px">
+						<pre><code class="hljs scala" data-trim>
+							val ratings = lines.map(x => x.toString().split("\t")(2))
+						</code></pre>
+						<table style="font-size: 18px; position: absolute; left: 20%; top: 105%">
 							<tbody>
 								<tr>
 									<td>196</td>
@@ -174,12 +177,8 @@
 								</tr>
 							</tbody>
 						</table>
-						<p>⬇︎</p>
-						<pre><code class="hljs scala" data-trim>
-							val ratings = lines.map(x => x.toString().split("\t")(2))
-						</code></pre>
-						<p>⬇︎</p>
-						<table style="font-size: 18px">
+						<p style="span font-size: 18px; position: absolute; left: 50%; top: 115%">⟶</p>
+						<table style="font-size: 18px; position: absolute; right: 30%; top: 105%">
 							<tbody>
 								<tr>
 									<td>3</td>
@@ -206,7 +205,7 @@
 						<pre><code class="hljs scala" data-trim>
 							val results = ratings.countByValue()
 						</code></pre>
-						<table style="font-size: 18px; position: absolute; left: 35%; top: 105%">
+						<table style="font-size: 18px; position: absolute; left: 32%; top: 105%">
 							<tbody>
 								<tr>
 									<td>3</td>
@@ -226,8 +225,8 @@
 							</tbody>
 						</table>
 						
-						<p style="font-size: 18px; position: absolute; left: 50%; top: 125%">→</p>
-						<table style="font-size: 18px; position: absolute; right: 35%; top: 120%">
+						<p style="span font-size: 18px; position: absolute; left: 47%; top: 115%">⟶</p>
+						<table style="font-size: 18px; position: absolute; right: 30%; top: 120%">
 							<tbody>
 								<tr>
 									<td>(3, 2)</td>
@@ -250,7 +249,7 @@
 
 							sortedResults.foreach(println)
 						</code></pre>
-						<table style="font-size: 18px; position: absolute; left: 35%; top: 120%">
+						<table style="font-size: 18px; position: absolute; left: 32%; top: 120%">
 							<tbody>
 								<tr>
 									<td>(3, 2)</td>
@@ -264,8 +263,8 @@
 							</tbody>
 						</table>
 						
-						<p style="font-size: 18px; position: absolute; left: 50%; top: 125%">→</p>
-						<table style="font-size: 18px; position: absolute; right: 35%; top: 120%">
+						<p style="span font-size: 18px; position: absolute; left: 47%; top: 115%">⟶</p>
+						<table style="font-size: 18px; position: absolute; right: 30%; top: 120%">
 							<tbody>
 								<tr>
 									<td>1 2</td>
