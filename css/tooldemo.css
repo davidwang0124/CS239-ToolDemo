@@ -1,3 +1,9 @@
 code.scala {
   font-size: 17px;
 }
+
+.tables-wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-content: flex-start;
+}

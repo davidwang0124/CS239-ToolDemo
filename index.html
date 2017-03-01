@@ -56,7 +56,7 @@
 
 									val ratings = lines.map(x => x.toString().split("\t")(2))
 
-									val results = ratings.countByValue()
+									val results = ratings.map(r => (r, 1)).reduceByKey(_ + _).collect()
 
 									val sortedResults = results.toSeq.sortBy(_._1)
 
@@ -143,102 +143,132 @@
 						<pre><code class="hljs scala" data-trim>
 							val ratings = lines.map(x => x.toString().split("\t")(2))
 						</code></pre>
-						<table style="font-size: 18px; position: absolute; left: 20%; top: 105%">
-							<tbody>
-								<tr>
-									<td>196</td>
-									<td>242</td>
-									<td>3</td>
-									<td>881250949</td>
-								</tr>
-								<tr>
-									<td>186</td>
-									<td>302</td>
-									<td>3</td>
-									<td>891717742</td>
-								</tr>
-								<tr>
-									<td>22</td>
-									<td>377</td>
-									<td>1</td>
-									<td>878887116</td>
-								</tr>
-								<tr>
-									<td>244</td>
-									<td>51</td>
-									<td>2</td>
-									<td>880606923</td>
-								</tr>
-								<tr>
-									<td>166</td>
-									<td>346</td>
-									<td>1</td>
-									<td>886397596</td>
-								</tr>
-							</tbody>
-						</table>
-						<p style="span font-size: 18px; position: absolute; left: 50%; top: 115%">⟶</p>
-						<table style="font-size: 18px; position: absolute; right: 30%; top: 105%">
-							<tbody>
-								<tr>
-									<td>3</td>
-								</tr>
-								<tr>
-									<td>3</td>
-								</tr>
-								<tr>
-									<td>1</td>
-								</tr>
-								<tr>
-									<td>2</td>
-								</tr>
-								<tr>
-									<td>1</td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="tables-wrapper">
+							<table style="font-size: 18px;">
+								<tbody>
+									<tr>
+										<td>196</td>
+										<td>242</td>
+										<td>3</td>
+										<td>881250949</td>
+									</tr>
+									<tr>
+										<td>186</td>
+										<td>302</td>
+										<td>3</td>
+										<td>891717742</td>
+									</tr>
+									<tr>
+										<td>22</td>
+										<td>377</td>
+										<td>1</td>
+										<td>878887116</td>
+									</tr>
+									<tr>
+										<td>244</td>
+										<td>51</td>
+										<td>2</td>
+										<td>880606923</td>
+									</tr>
+									<tr>
+										<td>166</td>
+										<td>346</td>
+										<td>1</td>
+										<td>886397596</td>
+									</tr>
+								</tbody>
+							</table>
+							<p style="font-size: 18px;">⟶</p>
+							<table style="font-size: 18px;">
+								<tbody>
+									<tr>
+										<td>3</td>
+									</tr>
+									<tr>
+										<td>3</td>
+									</tr>
+									<tr>
+										<td>1</td>
+									</tr>
+									<tr>
+										<td>2</td>
+									</tr>
+									<tr>
+										<td>1</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</section>
 
 					<section>
 						<h3>Count by value</h3>
+						<pre><code class="hljs scala" data-trim>
+							val results = ratings
+									.map(r => (r, 1))
+									.reduceByKey(_ + _)
+									.collect()
+						</code></pre>
+						<div class="tables-wrapper">
+							<table style="font-size: 18px;">
+								<tbody>
+									<tr>
+										<td>3</td>
+									</tr>
+									<tr>
+										<td>3</td>
+									</tr>
+									<tr>
+										<td>1</td>
+									</tr>
+									<tr>
+										<td>2</td>
+									</tr>
+									<tr>
+										<td>1</td>
+									</tr>
+								</tbody>
+							</table>
+							<p style="font-size: 18px;">⟶</p>
+							<table style="font-size: 18px;">
+								<tbody>
+									<tr>
+										<td>(3, 1)</td>
+									</tr>
+									<tr>
+										<td>(3, 1)</td>
+									</tr>
+									<tr>
+										<td>(1, 1)</td>
+									</tr>
+									<tr>
+										<td>(2, 1)</td>
+									</tr>
+									<tr>
+										<td>(1, 1)</td>
+									</tr>
+								</tbody>
+							</table>
+							<p style="font-size: 18px;">⟶</p>
+							<table style="font-size: 18px;">
+								<tbody>
+									<tr>
+										<td>(3, 2)</td>
+									</tr>
+									<tr>
+										<td>(1, 2)</td>
+									</tr>
+									<tr>
+										<td>(2, 1)</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 
+						<p><em>P.S. This is same as:</em></p>
 						<pre><code class="hljs scala" data-trim>
 							val results = ratings.countByValue()
 						</code></pre>
-						<table style="font-size: 18px; position: absolute; left: 32%; top: 105%">
-							<tbody>
-								<tr>
-									<td>3</td>
-								</tr>
-								<tr>
-									<td>3</td>
-								</tr>
-								<tr>
-									<td>1</td>
-								</tr>
-								<tr>
-									<td>2</td>
-								</tr>
-								<tr>
-									<td>1</td>
-								</tr>
-							</tbody>
-						</table>
-						
-						<p style="span font-size: 18px; position: absolute; left: 47%; top: 115%">⟶</p>
-						<table style="font-size: 18px; position: absolute; right: 30%; top: 120%">
-							<tbody>
-								<tr>
-									<td>(3, 2)</td>
-								</tr>
-								<tr>
-									<td>(1, 2)</td>
-								</tr>
-								<tr>
-									<td>(2, 1)</td>
-								</tr>
-							</tbody>
-						</table>
 					</section>
 
 					<section>
@@ -249,34 +279,36 @@
 
 							sortedResults.foreach(println)
 						</code></pre>
-						<table style="font-size: 18px; position: absolute; left: 32%; top: 120%">
-							<tbody>
-								<tr>
-									<td>(3, 2)</td>
-								</tr>
-								<tr>
-									<td>(1, 2)</td>
-								</tr>
-								<tr>
-									<td>(2, 1)</td>
-								</tr>
-							</tbody>
-						</table>
-						
-						<p style="span font-size: 18px; position: absolute; left: 47%; top: 115%">⟶</p>
-						<table style="font-size: 18px; position: absolute; right: 30%; top: 120%">
-							<tbody>
-								<tr>
-									<td>1 2</td>
-								</tr>
-								<tr>
-									<td>2 1</td>
-								</tr>
-								<tr>
-									<td>3 2</td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="tables-wrapper">
+							<table style="font-size: 18px;">
+								<tbody>
+									<tr>
+										<td>(3, 2)</td>
+									</tr>
+									<tr>
+										<td>(1, 2)</td>
+									</tr>
+									<tr>
+										<td>(2, 1)</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<p style="font-size: 18px;">⟶</p>
+							<table style="font-size: 18px;">
+								<tbody>
+									<tr>
+										<td>(1, 2)</td>
+									</tr>
+									<tr>
+										<td>(2, 1)</td>
+									</tr>
+									<tr>
+										<td>(3, 2)</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</section>
 				</section>
 
