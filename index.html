@@ -26,179 +26,195 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-					<h1>Spark Demo</h1>
-					<h4>An open-source cluster-computing framework</h4>
+					<h1>Spark Demo 101</h1>
+					<h4>Tiny sample walkthrough</h4>
 					<p>
 						<small>Presented by Xingan Wang &amp; Yiming Wang</small>
 					</p>
 				</section>
 
 				<section>
-					<h2>Introduction</h2>
 					<section>
-
-						<ul>
-							<li>Apache Spark was originally developed at the University of California, Berkeley's AMPLab</li>
-							<li>The Spark codebase was later donated to the Apache Software Foundation</li>
-							<li>It is a fast and general engine for large-scale data processing</li>
-						</ul>
+						<h3>Rating Counter</h3>
+						<p>Find the occurence for each rating.</p>
 					</section>
-
 					<section>
-						<ul>
-							<li>"Run programs up to 100x faster than Hadoop MapReduce in memory, or 10x faster on disk."</li>
-							<li>DAG Engine (directed acyclic graph) optimizes workflows</li>
-						</ul>
-					</section>
+						<pre><code class="hljs scala" data-trim style="max-height: 100%">
+							package org.cs239.spark
 
-					<section>
-						<ul>
-							<li>Code in Python, Java, or Scala</li>
-							<li>Built around one main concept: the Resilient Distributed Dataset(RDD).</li>
-						</ul>
-					</section>
+							import org.apache.spark._
+							import org.apache.spark.SparkContext._
+							import org.apache.log4j._
 
-					<section>
-						<h3>Why Scala?</h3>
-						<ul>
-							<li>Spark itself is written in Scala</li>
-							<li>Scala uses functional programming model which is a good fit for distributed processing</li>
-							<li>Fast performance (python is slow in comparison)</li>
-							<li>Scala complies to Java bytecode</li>
-						</ul>
-					</section>
+							object RatingsCounter {
+								def main(args: Array[String]) {
+									Logger.getLogger("org").setLevel(Level.ERROR)
 
+									val sc = new SparkContext("local[*]", "RatingsCounter")
+
+									val lines = sc.textFile("../ml-100k/u.data")
+
+									val ratings = lines.map(x => x.toString().split("\t")(2))
+
+									val results = ratings.countByValue()
+
+									val sortedResults = results.toSeq.sortBy(_._1)
+
+									sortedResults.foreach(println)
+								}
+							}
+						</code></pre>
+					</section>
 				</section>
 
 				<section>
 					<section>
-						<h2>Setup</h2>
+						<h2>Step by step walkthrough...</h2>
 					</section>
 
 					<section>
-						<h3>Install a Java Development Kit (JDK)</h3>
-						<small><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK Download Site</a></small>
-					</section>
+						<h3>Package declaration & external package import</h3>
+						<pre><code class="hljs scala" data-trim>
+							package org.cs239.spark
 
-					<section>
-						<h3>Install Spark</h3>
-						<br><small><a href="https://spark.apache.org/downloads.html">Spark Download Site</a></small></br>
-						<ul>
-							<li>Install Homebrew</li>
-							<li>Enter <font color=grey>brew install apache-spark</font></li>
-							<li>Create a log4j.properties file via
-							   <br><font color=grey>cd /usr/local/Cellar/apache-spark/2.0.0/libexec/conf</font></br>
-							   <font color=grey>cp log4j.properties.template log4j.properties</font></li>
-							<li>Change the error level from INFO to ERROR for log4j.rootCategory</li>
-						</ul>
-					</section>
-
-					<section>
-						<h3>Install Scala IDE</h3>
-						<small><a href="http://scala-ide.org/download/sdk.html">Scala IDE Download Site</a></small>
-					</section>
-				</section>
-
-				<section>
-
-					<section>
-						<h3>Popular Movies</h3>
-						<h4>Find the movies with the most ratings.</h4>
-					</section>
-					<section>
-						Main function
-						<pre><code class="hljs scala" data-trim contenteditable>
-						  def main(args: Array[String]) {
-
-						    // Create a logger to trace the execution
-						    // Set the log level to only print errors
-						    Logger.getLogger("org").setLevel(Level.ERROR)
-
-						    // Create a SparkContext using every core of the local machine
-						    val sc = new SparkContext("local[*]", "PopularMoviesNicer")
-
-						    // Create a broadcast variable of our ID -> movie name map
-						    var nameDict = sc.broadcast(loadMovieNames)
-
-						    ...
-						  }
+							import org.apache.spark._
+							import org.apache.spark.SparkContext._
+							import org.apache.log4j._
 						</code></pre>
 					</section>
 
 					<section>
-						Build a Map of movie IDs to movie names
-						<pre><code class="hljs scala" data-trim contenteditable>
-						  def loadMovieNames() : Map[Int, String] = {
-
-						    // Handle character encoding issues:
-						    implicit val codec = Codec("UTF-8")
-						    codec.onMalformedInput(CodingErrorAction.REPLACE)
-						    codec.onUnmappableCharacter(CodingErrorAction.REPLACE)
-
-						    // Create a Map of Ints to Strings.
-						    var movieNames:Map[Int, String] = Map()
-
-						    val lines = Source.fromFile("../ml-100k/u.item").getLines()
-						    for (line &lt;- lines) {
-						      var fields = line.split('|')
-						      if (fields.length > 1) {
-						        movieNames += (fields(0).toInt -> fields(1))
-						      }
-						    }
-
-						    return movieNames
-						  }
+						<h3>Logger level & Context setup</h3>
+						<pre><code class="hljs scala" data-trim>
+							Logger.getLogger("org").setLevel(Level.ERROR)
+							val sc = new SparkContext("local[*]", "RatingsCounter")
 						</code></pre>
-						<small>../ml-100k/u.item: MovieId | MovieName | Date | Link</small>
+						<em>P.S. if we want to deploy on clusters, just</em>
+						<pre><code class="hljs scala" data-trim>
+							val conf = new SparkConf().setAppName(appName)
+							val sc = new SparkContext(conf)
+						</code></pre>
 					</section>
 
 					<section>
-						Main function continue
-						<pre><code class="hljs scala" data-trim contenteditable>
-							...
-
-						    // Read in each rating line
-						    val lines = sc.textFile("../ml-100k/u.data")
-
-						    // Map to (movieID, 1) tuples
-						    val movies = lines.map(x => (x.split("\t")(1).toInt, 1))
-
-						    // Count up all the 1's for each movie
-						    val movieCounts = movies.reduceByKey( (x, y) => x + y )
-
-						    // Flip (movieID, count) to (count, movieID)
-						    val flipped = movieCounts.map( x => (x._2, x._1) )
-
-						    // Sort
-						    val sortedMovies = flipped.sortByKey()
-
-						    // Fold in the movie names from the broadcast variable
-						    val sortedMoviesWithNames = sortedMovies.map(x => (nameDict.value(x._2), x._1))
-
-						    // Collect and print results
-						    val results = sortedMoviesWithNames.collect()
-
-						    results.foreach(println)
-						  }
+						<h3>Load the data</h3>
+						<table style="font-size: 18px">
+							<tbody>
+								<tr>
+									<td>196</td>
+									<td>242</td>
+									<td>3</td>
+									<td>881250949</td>
+								</tr>
+								<tr>
+									<td>186</td>
+									<td>302</td>
+									<td>3</td>
+									<td>891717742</td>
+								</tr>
+								<tr>
+									<td>22</td>
+									<td>377</td>
+									<td>1</td>
+									<td>878887116</td>
+								</tr>
+								<tr>
+									<td>244</td>
+									<td>51</td>
+									<td>2</td>
+									<td>880606923</td>
+								</tr>
+								<tr>
+									<td>166</td>
+									<td>346</td>
+									<td>1</td>
+									<td>886397596</td>
+								</tr>
+							</tbody>
+						</table>
+						<pre><code class="hljs scala" data-trim>
+							val lines = sc.textFile("../ml-100k/u.data")
 						</code></pre>
-						<small>../ml-100k/u.data: UserId, MovieId, Rating, Time.</small>
 					</section>
 
+					<section>
+						<h3>Extract(Map) the data</h3>
+
+						<table style="font-size: 18px">
+							<tbody>
+								<tr>
+									<td>196</td>
+									<td>242</td>
+									<td>3</td>
+									<td>881250949</td>
+								</tr>
+								<tr>
+									<td>186</td>
+									<td>302</td>
+									<td>3</td>
+									<td>891717742</td>
+								</tr>
+								<tr>
+									<td>22</td>
+									<td>377</td>
+									<td>1</td>
+									<td>878887116</td>
+								</tr>
+								<tr>
+									<td>244</td>
+									<td>51</td>
+									<td>2</td>
+									<td>880606923</td>
+								</tr>
+								<tr>
+									<td>166</td>
+									<td>346</td>
+									<td>1</td>
+									<td>886397596</td>
+								</tr>
+							</tbody>
+						</table>
+						<p>⬇︎</p>
+						<pre><code class="hljs scala" data-trim>
+							val ratings = lines.map(x => x.toString().split("\t")(2))
+						</code></pre>
+						<p>⬇︎</p>
+						<table style="font-size: 18px">
+							<tbody>
+								<tr>
+									<td>3</td>
+								</tr>
+								<tr>
+									<td>3</td>
+								</tr>
+								<tr>
+									<td>1</td>
+								</tr>
+								<tr>
+									<td>2</td>
+								</tr>
+								<tr>
+									<td>1</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+
+					<section>
+						<h3>Package declaration & external package import</h3>
+						<pre><code class="hljs scala" data-trim>
+							package org.cs239.spark
+
+							import org.apache.spark._
+							import org.apache.spark.SparkContext._
+							import org.apache.log4j._
+						</code></pre>
+					</section>
 				</section>
 
-				<section>
-					<h2>Packaging and Deploying your application</h2>
-					<ul>
-						<li>Package up your Scala project into a JAR file</li>
-						<li>Upload jar files and data files to aws S3</li>
-						<li>Login to EMR/EC2 and download jar file and data file</li>
-						<li><code>spark-submit</code> to run</li>
-					</ul>
-				</section>
 
 				<section>
 					<h2>Thanks</h2>
-
 				</section>
 
 			</div>
